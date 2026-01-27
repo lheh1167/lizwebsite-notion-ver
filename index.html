@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>elizabeth hong.</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
+            background-color: #f7f7f7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 150px;
+        }
+
+        .browser-window {
+            width: 100%;
+            max-width: 750px;
+            height: auto;
+            max-height: 600px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0px 20px 60px 0px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Bar */
+        .header-bar {
+            background: #f5f5f5;
+            padding: 0 16px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .left-icons {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            padding: 0 3px;
+        }
+
+        .traffic-lights {
+            display: flex;
+            gap: 8px;
+        }
+
+        .traffic-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .traffic-light.red {
+            background-color: #ff5f57;
+        }
+
+        .traffic-light.yellow {
+            background-color: #ffbd2e;
+        }
+
+        .traffic-light.green {
+            background-color: #28ca42;
+        }
+
+        @keyframes dance-red {
+            0%, 100% { transform: translateX(0); }
+            33% { transform: translateX(20px); }
+            66% { transform: translateX(40px); }
+        }
+
+        @keyframes dance-yellow {
+            0%, 100% { transform: translateX(0); }
+            33% { transform: translateX(20px); }
+            66% { transform: translateX(-20px); }
+        }
+
+        @keyframes dance-green {
+            0%, 100% { transform: translateX(0); }
+            33% { transform: translateX(-20px); }
+            66% { transform: translateX(-40px); }
+        }
+
+        .traffic-lights.dancing .traffic-light.red {
+            animation: dance-red 1s ease-in-out;
+        }
+
+        .traffic-lights.dancing .traffic-light.yellow {
+            animation: dance-yellow 1s ease-in-out;
+        }
+
+        .traffic-lights.dancing .traffic-light.green {
+            animation: dance-green 1s ease-in-out;
+        }
+
+        .notification-wrapper {
+            position: relative;
+        }
+
+        .notification-badge {
+            width: 21px;
+            height: 16.5px;
+            border: 1px solid #d0d0d0;
+            border-radius: 3px;
+            position: relative;
+            background: transparent;
+        }
+
+        .notification-badge::after {
+            content: '';
+            position: absolute;
+            left: 60%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: #d0d0d0;
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -6px;
+            background: #eb5858;
+            color: white;
+            width: 13.5px;
+            height: 13.5px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-weight: 600;
+        }
+
+        .arrows {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .arrow {
+            width: auto;
+            height: auto;
+            position: relative;
+            cursor: pointer;
+            opacity: 0.3;
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow.active {
+            opacity: 1;
+        }
+
+        .tab-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .tab {
+            background: white;
+            padding: 14px 19px;
+            font-size: 12px;
+            color: black;
+            font-weight: 400;
+        }
+
+        .plus-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #ccc;
+            font-weight: 300;
+            cursor: pointer;
+        }
+
+        /* Top Header */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 26px;
+            height: 35px;
+        }
+
+        .site-name {
+            font-size: 12px;
+            color: black;
+            font-weight: 400;
+        }
+
+        .right-section {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            height: 100%;
+        }
+
+        .email-link {
+            font-size: 12px;
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+        }
+
+        .email-link:hover {
+            text-decoration: underline;
+        }
+
+        .star-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .star-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: #666;
+            stroke-width: 1.8;
+            transition: all 0.2s ease;
+        }
+
+        .star-icon.active svg {
+            fill: #F5A623;
+            stroke: #F5A623;
+        }
+
+        .more-dots {
+            display: flex;
+            align-items: center;
+            gap: 2.5px;
+            cursor: pointer;
+        }
+
+        .more-dots span {
+            width: 3px;
+            height: 3px;
+            background: #666;
+            border-radius: 50%;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .more-dots.wiggling {
+            animation: wiggle 0.5s ease-in-out;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title-section {
+            padding: 0 31px 36px;
+            position: relative;
+        }
+
+        .snowman-image {
+            width: 67px;
+            height: 94px;
+            border-radius: 2.4px;
+            object-fit: cover;
+            margin-top: 4px;
+            margin-bottom: -36px;
+        }
+
+        .main-title {
+            font-size: 31px;
+            font-weight: 800;
+            letter-spacing: -0.31px;
+            letter-spacing: normal;
+            color: black;
+            padding-left: 66px;
+            margin-bottom: -36px;
+        }
+
+        .page-content {
+            flex: 1;
+            padding: 40px 100px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 0px;
+        }
+
+        .text-area {
+            font-size: 14px;
+            font-weight: 420;
+            line-height: 1.4;
+            color: #2c2c2b;
+            letter-spacing: -0.02em;
+        }
+
+        .text-area p {
+            margin-bottom: 0.03em;
+        }
+
+        .listed-items {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .list-item {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .list-number {
+            font-size: 14px;
+            font-weight: 420;
+            color: #2c2c2b;
+            letter-spacing: -0.02em;
+        }
+
+        .page-icon {
+            width: 14px;
+            height: 16px;
+            display: inline-block;
+        }
+
+        .page-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .link-text {
+            font-size: 14px;
+            font-weight: 700;
+            color: #4e4e4e;
+            text-decoration: underline;
+            cursor: pointer;
+            letter-spacing: -0.02em;
+        }
+
+        .link-text:hover {
+            color: #000;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .browser-window {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-content {
+                padding: 40px 50px;
+            }
+
+            .main-title {
+                font-size: 32px;
+                padding-left: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .browser-window {
+                height: auto;
+            }
+
+            .page-content {
+                padding: 40px 32px;
+            }
+
+            .main-title {
+                font-size: 28px;
+                padding-left: 32px;
+            }
+
+            .snowman-image {
+                width: 50px;
+                height: 70px;
+            }
+
+            .text-area {
+            font-size: 14px;
+            font-weight: 420;
+            line-height: 1.4;
+            color: #2c2c2b;
+            letter-spacing: -0.02em;
+        }
+
+            .list-number,
+            .link-text {
+            font-size: 14px;
+            font-weight: 700;
+            color: #4e4e4e;
+            text-decoration: underline;
+            cursor: pointer;
+            letter-spacing: -0.02em;
+        }
+        }
+    </style>
+    <script>
+        // Handle navigation arrow states
+        window.addEventListener('DOMContentLoaded', function() {
+            const backArrow = document.querySelector('.arrow:not(.right)');
+            const forwardArrow = document.querySelector('.arrow.right');
+            
+            // Check if we can go back in history
+            if (window.history.length > 1) {
+                backArrow.classList.add('active');
+            }
+            
+            // Handle back arrow click
+            backArrow.addEventListener('click', function() {
+                if (window.history.length > 1) {
+                    window.history.back();
+                }
+            });
+            
+            // Handle forward arrow click
+            forwardArrow.addEventListener('click', function() {
+                window.history.forward();
+            });
+            
+            // Update arrow states on page show (handles back/forward navigation)
+            window.addEventListener('pageshow', function() {
+                setTimeout(function() {
+                    backArrow.classList.remove('active');
+                    forwardArrow.classList.remove('active');
+                    
+                    if (window.history.length > 1) {
+                        backArrow.classList.add('active');
+                    }
+                }, 0);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="browser-window">
+        <!-- Header Bar -->
+        <div class="header-bar">
+            <div class="left-icons">
+                <div class="traffic-lights" onclick="this.classList.add('dancing'); setTimeout(() => this.classList.remove('dancing'), 1000);">
+                    <div class="traffic-light red"></div>
+                    <div class="traffic-light yellow"></div>
+                    <div class="traffic-light green"></div>
+                </div>
+                <div class="notification-wrapper" onclick="let count = this.querySelector('.notification-count'); count.textContent = parseInt(count.textContent) + 1;">
+                    <div class="notification-badge"></div>
+                    <div class="notification-count">1</div>
+                </div>
+                <div class="arrows">
+                    <div class="arrow">〈</div>
+                    <div class="arrow right">〉</div>
+                </div>
+            </div>
+            <div class="tab-section">
+                <div class="tab">elizabeth hong.</div>
+                <div class="plus-icon" onclick="this.textContent = this.textContent === '╋' ? '×' : '╋';">╋</div>
+            </div>
+        </div>
+
+        <!-- Top Header -->
+        <div class="top-header">
+            <div class="site-name">elizabeth hong.</div>
+            <div class="right-section">
+                <a href="/cdn-cgi/l/email-protection#3a43554f48175f575b53567a5f425b574a565f14595557" class="email-link">Email Me</a>
+                <div class="star-icon" onclick="this.classList.toggle('active')">
+                    <svg viewBox="0 0 26 25" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 1 L15.5 9 L15.5 9.5 L24 10.5 L17.5 16 L19.5 24 L13 19.5 L6.5 24 L8.5 16 L2 10.5 L10.5 9.5 L10.5 9 Z" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="more-dots" onclick="this.classList.add('wiggling'); setTimeout(() => this.classList.remove('wiggling'), 500);">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="title-section">
+                <img src="images/Snowman.png" class="snowman-image">
+                <h1 class="main-title">elizabeth hong.</h1>
+            </div>
+
+            <div class="page-content">
+                <div class="text-area">
+                    <p>Hi friends, I'm Liz and this is my site.</p>
+                    <p>It exists as a home for:</p>
+                </div>
+
+                <div class="listed-items">
+                    <div class="list-item">
+                        <span class="list-number">1. My</span>
+                        <div class="page-icon">
+                            <svg viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 0C0.89543 0 0 0.89543 0 2V14C0 15.1046 0.89543 16 2 16H12C13.1046 16 14 15.1046 14 14V5L9 0H2Z" fill="#E8E8E8"/>
+                                <path d="M9 0V5H14" fill="#C4C4C4"/>
+                            </svg>
+                        </div>
+                        <a href="personal-projects.html" style="text-decoration: none;"><span class="link-text">personal projects</span></a>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-number">2. My thoughts and learnings in the form of</span>
+                        <div class="page-icon">
+                            <svg viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 0C0.89543 0 0 0.89543 0 2V14C0 15.1046 0.89543 16 2 16H12C13.1046 16 14 15.1046 14 14V5L9 0H2Z" fill="#E8E8E8"/>
+                                <path d="M9 0V5H14" fill="#C4C4C4"/>
+                            </svg>
+                        </div>
+                        <span class="link-text">articles.</span>
+                    </div>
+                </div>
+
+                <div class="text-area" style="margin-top: 39px;">
+                    <p>For most of the day, I'm chugging along through a medical degree - But the little bits of spare time I collate to create the things on this site is where I consider the essence of my time to be. </p>
+                    <p>&nbsp;</p>
+                    <p>Hope you enjoy,</p>
+                    <p>🚶🏻‍♀️‍➡️ Elizabeth</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                </div>
+            </di
