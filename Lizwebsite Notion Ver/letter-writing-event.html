@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>letter writing event</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
+            background-color: #f7f7f7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 150px;
+        }
+
+        .browser-window {
+            width: 100%;
+            max-width: 750px;
+            height: auto;
+            max-height: 600px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0px 20px 60px 0px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-bar {
+            background: #f5f5f5;
+            padding: 0 16px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .left-icons {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            padding: 0 3px;
+        }
+
+        .traffic-lights {
+            display: flex;
+            gap: 8px;
+        }
+
+        .traffic-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .traffic-light.red {
+            background-color: #ff5f57;
+        }
+
+        .traffic-light.yellow {
+            background-color: #ffbd2e;
+        }
+
+        .traffic-light.green {
+            background-color: #28ca42;
+        }
+
+        @keyframes dance-red {
+            0%, 100% { transform: translateX(0); }
+            33% { transform: translateX(20px); }
+            66% { transform: translateX(40px); }
+        }
+
+        @keyframes dance-yellow {
+            0%, 100% { transform: translateX(0); }
+            33% { transform: translateX(20px); }
+            66% { transform: translateX(-20px); }
+        }
+
+        @keyframes dance-green {
+            0%, 100% { transform: translateX(0); }
+            33% { transform: translateX(-20px); }
+            66% { transform: translateX(-40px); }
+        }
+
+        .traffic-lights.dancing .traffic-light.red {
+            animation: dance-red 1s ease-in-out;
+        }
+
+        .traffic-lights.dancing .traffic-light.yellow {
+            animation: dance-yellow 1s ease-in-out;
+        }
+
+        .traffic-lights.dancing .traffic-light.green {
+            animation: dance-green 1s ease-in-out;
+        }
+
+        .notification-wrapper {
+            position: relative;
+        }
+
+        .notification-badge {
+            width: 21px;
+            height: 16.5px;
+            border: 1px solid #d0d0d0;
+            border-radius: 3px;
+            position: relative;
+            background: transparent;
+        }
+
+        .notification-badge::after {
+            content: '';
+            position: absolute;
+            left: 60%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: #d0d0d0;
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -6px;
+            background: #eb5858;
+            color: white;
+            width: 13.5px;
+            height: 13.5px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-weight: 600;
+        }
+
+        .arrows {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .arrow {
+            width: auto;
+            height: auto;
+            position: relative;
+            cursor: pointer;
+            opacity: 0.3;
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow.active {
+            opacity: 1;
+        }
+
+        .tab-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .tab {
+            background: white;
+            padding: 14px 19px;
+            font-size: 12px;
+            color: black;
+            font-weight: 400;
+        }
+
+        .plus-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #ccc;
+            font-weight: 300;
+            cursor: pointer;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 26px;
+            height: 35px;
+        }
+
+        .site-name {
+            font-size: 12px;
+            color: black;
+            font-weight: 400;
+        }
+
+        .site-name .separator {
+            color: #999;
+        }
+
+        .right-section {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            height: 100%;
+        }
+
+        .email-link {
+            font-size: 12px;
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+        }
+
+        .email-link:hover {
+            text-decoration: underline;
+        }
+
+        .star-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .star-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: #666;
+            stroke-width: 1.8;
+            transition: all 0.2s ease;
+        }
+
+        .star-icon.active svg {
+            fill: #F5A623;
+            stroke: #F5A623;
+        }
+
+        .more-dots {
+            display: flex;
+            align-items: center;
+            gap: 2.5px;
+            cursor: pointer;
+        }
+
+        .more-dots span {
+            width: 3px;
+            height: 3px;
+            background: #666;
+            border-radius: 50%;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .more-dots.wiggling {
+            animation: wiggle 0.5s ease-in-out;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title-section {
+            padding: 0 31px 36px;
+            position: relative;
+        }
+
+        .project-image {
+            width: 79px;
+            height: 110px;
+            margin-bottom: -36px;
+            font-size: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-title {
+            font-size: 31px;
+            font-weight: 800;
+            letter-spacing: -0.31px;
+            letter-spacing: normal;
+            color: black;
+            padding-left: 66px;
+            margin-bottom: -36px;
+        }
+
+        .page-content {
+            flex: 1;
+            padding: 40px 100px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 0px;
+        }
+
+        .text-area {
+            font-size: 14px;
+            font-weight: 420;
+            line-height: 1.4;
+            color: #2c2c2b;
+            letter-spacing: -0.02em;
+        }
+
+        .text-area p {
+            margin-bottom: 0.03em;
+        }
+
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .content-image {
+            display: block;
+            width: 45%;
+            border-radius: 1.2px;
+        }
+
+        .image-caption {
+            font-size: 14px;
+            font-weight: 420;
+            line-height: 1.4;
+            color: #2c2c2b;
+            opacity: 0.45;
+            letter-spacing: -0.02em;
+            text-align: left;
+            margin-top: 5px;
+            width: 45%;
+        }
+
+        @media (max-width: 1200px) {
+            .browser-window {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-content {
+                padding: 40px 50px;
+            }
+
+            .main-title {
+                font-size: 32px;
+                padding-left: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .browser-window {
+                height: auto;
+            }
+
+            .page-content {
+                padding: 40px 32px;
+            }
+
+            .main-title {
+                font-size: 28px;
+                padding-left: 32px;
+            }
+
+            .project-image {
+                width: 50px;
+                height: 70px;
+            }
+
+            .text-area {
+            font-size: 14px;
+            font-weight: 420;
+            line-height: 1.4;
+            color: #2c2c2b;
+            letter-spacing: -0.02em;
+        }
+        }
+    </style>
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            const backArrow = document.querySelector('.arrow:not(.right)');
+            const forwardArrow = document.querySelector('.arrow.right');
+            
+            if (window.history.length > 1) {
+                backArrow.classList.add('active');
+            }
+            
+            backArrow.addEventListener('click', function() {
+                if (window.history.length > 1) {
+                    window.history.back();
+                }
+            });
+            
+            forwardArrow.addEventListener('click', function() {
+                window.history.forward();
+            });
+            
+            window.addEventListener('pageshow', function() {
+                setTimeout(function() {
+                    backArrow.classList.remove('active');
+                    forwardArrow.classList.remove('active');
+                    
+                    if (window.history.length > 1) {
+                        backArrow.classList.add('active');
+                    }
+                }, 0);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="browser-window">
+        <div class="header-bar">
+            <div class="left-icons">
+                <div class="traffic-lights" onclick="this.classList.add('dancing'); setTimeout(() => this.classList.remove('dancing'), 1000);">
+                    <div class="traffic-light red"></div>
+                    <div class="traffic-light yellow"></div>
+                    <div class="traffic-light green"></div>
+                </div>
+                <div class="notification-wrapper" onclick="let count = this.querySelector('.notification-count'); count.textContent = parseInt(count.textContent) + 1;">
+                    <div class="notification-badge"></div>
+                    <div class="notification-count">1</div>
+                </div>
+                <div class="arrows">
+                    <div class="arrow">〈</div>
+                    <div class="arrow right">〉</div>
+                </div>
+            </div>
+            <div class="tab-section">
+                <div class="tab">letter writing event</div>
+                <div class="plus-icon" onclick="this.textContent = this.textContent === '╋' ? '×' : '╋';">╋</div>
+            </div>
+        </div>
+
+        <div class="top-header">
+            <div class="site-name"><a href="index.html" style="text-decoration: none; color: black;">elizabeth hong.</a> <span class="separator">/</span> <a href="personal-projects.html" style="text-decoration: none; color: black;">personal projects</a> <span class="separator">/</span> letter writing event</div>
+            <div class="right-section">
+                <a href="/cdn-cgi/l/email-protection#9ce5f3e9eeb1f9f1fdf5f0dcf9e4fdf1ecf0f9b2fff3f1" class="email-link">Email Me</a>
+                <div class="star-icon" onclick="this.classList.toggle('active')">
+                    <svg viewBox="0 0 26 25" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 1 L15.5 9 L15.5 9.5 L24 10.5 L17.5 16 L19.5 24 L13 19.5 L6.5 24 L8.5 16 L2 10.5 L10.5 9.5 L10.5 9 Z" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="more-dots" onclick="this.classList.add('wiggling'); setTimeout(() => this.classList.remove('wiggling'), 500);">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="title-section">
+                <div class="project-image">💌</div>
+                <h1 class="main-title">letter writing event</h1>
+            </div>
+
+            <div class="page-content">
+                <div class="text-area">
+                    <p>I am by no means, a host.</p>
+                    <p>&nbsp;</p>
+                    <p>Instead, I have long dwelt in the passivity of waiting for the right event, the right people, the right taste; to simply come along.</p>
+                    <p>&nbsp;</p>
+                    <p>This event was my first step out of this familiar pattern.</p>
+                    <p>&nbsp;</p>
+                    <p>As I decided what I should do with the event, it occurred to me that planning this felt a lot like choosing a gift for someone I love.</p>
+                    <p>&nbsp;</p>
+                    <p>What came to mind was a recent resolution that I deeply wanted to share - the need to earnestly prioritise personal projects, where I've come to see much of true personal growth lies.</p>
+                    <p>&nbsp;</p>
+                    <p>I could see this was not a struggle for the more ruthless of people, but rather for the more meek-and-mild mannered kind. I felt that although they (we) have the same kind of desire to work on things that are our own, we often push the needs of others, and the needs of reality above them.</p>
+                    <p>&nbsp;</p>
+                    <p>I wanted those of us that felt this way to be consoled first and next, to reset our antennae to be directed more towards our personal curiosities, interests and desires ever so slightly more. I settled on an event where together, we sit in silence and write letters to ourselves , reflecting on this very thought. At the end of the night, we would walk together to a post office to post the letter.</p>
+                </div>
+
+                <div class="image-container">
+                    <img src="images/space.jpg" class="content-image">
+                    <p class="image-caption">The Maido Space</p>
+                </div>
+
+                <div class="text-area">
+                    <p>My old boss, Steve from the Hemingway Report kindly sponsored the event (which increased the quality of wine significantly). For the space, I rented out the Maido space by the Provider Store which was once a much-loved pop-up cafe.</p>
+                </div>
+
+                <div class="image-container">
+                    <img src="images/walking.jpg" class="content-image">
+                    <p class="image-caption">Walking over to the post box...</p>
+                </div>
+
+                <div class="text-area">
+                    <p>It was a tiny event, but as I sat there listening to Chet Baker and writing alongside my guests, it felt surreal that I had spun this random thought I had into the world.</p>
+                    <p>&nbsp;</p>
+                    <p>There are so many things that ought to happen that are waiting in the abyss to emerge into our reality. I wonder what'll be next?</p>
+                </div>
+
+                <div class="image-container">
+                    <img src="images/postbox.jpg" class="content-image">
+                    <p class="image-caption">See you in a couple of days!</p>
+                </div>
+
+                <div class="text-area">
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                </div>
+            </d
