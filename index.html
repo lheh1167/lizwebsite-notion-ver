@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>elizabeth hong.</title>
+    <link rel="icon" type="image/png" href="images/Snowman.png">
     
     <style>
         * {
@@ -480,7 +481,14 @@
                 letter-spacing: -0.02em;
             }
 
-            .list-number,
+            .list-number {
+                font-size: 14px;
+                font-weight: 420;
+                color: #2c2c2b;
+                text-decoration: none;
+                letter-spacing: -0.02em;
+            }
+
             .link-text {
                 font-size: 14px;
                 font-weight: 700;
@@ -488,6 +496,41 @@
                 text-decoration: underline;
                 cursor: pointer;
                 letter-spacing: -0.02em;
+            }
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+            body {
+                padding: 20px;
+                align-items: flex-start;
+            }
+
+            .browser-window {
+                max-height: none;
+                height: auto;
+            }
+
+            .page-content {
+                padding: 40px 32px 60px;
+            }
+
+            .title-section {
+                padding: 0 32px 36px;
+            }
+
+            .text-area {
+                font-size: 14px;
+            }
+
+            .list-number {
+                font-size: 14px;
+                font-weight: 420;
+                color: #2c2c2b;
+                text-decoration: none;
+            }
+
+            .link-text {
+                font-size: 14px;
             }
         }
     </style>
