@@ -11,6 +11,8 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
 
         body {
@@ -499,10 +501,12 @@
             }
         }
 
-        @media (max-height: 500px) and (orientation: landscape) {
+        @media (max-width: 900px) and (orientation: landscape) {
             body {
                 padding: 20px;
                 align-items: flex-start;
+                -webkit-text-size-adjust: 100%;
+                text-size-adjust: 100%;
             }
 
             .browser-window {
@@ -518,8 +522,16 @@
                 padding: 0 32px 36px;
             }
 
+            .main-title {
+                font-size: 32px;
+            }
+
             .text-area {
                 font-size: 14px;
+                font-weight: 420;
+                line-height: 1.4;
+                color: #2c2c2b;
+                letter-spacing: -0.02em;
             }
 
             .list-number {
@@ -527,10 +539,24 @@
                 font-weight: 420;
                 color: #2c2c2b;
                 text-decoration: none;
+                letter-spacing: -0.02em;
             }
 
             .link-text {
                 font-size: 14px;
+                font-weight: 700;
+                color: #4e4e4e;
+                text-decoration: underline;
+                letter-spacing: -0.02em;
+            }
+
+            .email-link {
+                display: none;
+            }
+
+            .snowman-image {
+                width: 60px;
+                height: 84px;
             }
         }
     </style>
