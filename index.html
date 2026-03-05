@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>window._pageStartTime = performance.now();</script>
+    <script>window._pageStartTime = Date.now();</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>elizabeth hong.</title>
@@ -606,8 +606,7 @@
             const overlay = document.getElementById('loadingOverlay');
             const pageInner = document.getElementById('pageInner');
             const GIF_DURATION = 200;
-            const loadTime = performance.now();
-            const elapsed = loadTime - window._pageStartTime;
+            const elapsed = Date.now() - window._pageStartTime;
             const remaining = Math.max(0, GIF_DURATION - elapsed);
             setTimeout(function() {
                 overlay.classList.add('hidden');
