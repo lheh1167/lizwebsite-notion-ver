@@ -296,11 +296,50 @@
             animation: wiggle 0.5s ease-in-out;
         }
 
-        .main-content {
+        /* Loading Overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 1;
+            transition: opacity 0.4s ease;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-gif {
+            width: auto;
+            height: auto;
+            max-width: 60%;
+            max-height: 60%;
+        }
+
+        .page-inner {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .page-inner.visible {
+            opacity: 1;
+        }
+
+                .main-content {
             flex: 1;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .title-section {
@@ -559,7 +598,16 @@
     </style>
     <script>
         // Handle navigation arrow states
-        window.addEventListener('DOMContentLoaded', function() {
+        // Loading screen
+        window.addEventListener('load', function() {
+            const overlay = document.getElementById('loadingOverlay');
+            const pageInner = document.getElementById('pageInner');
+            overlay.classList.add('hidden');
+            pageInner.classList.add('visible');
+            setTimeout(() => { overlay.style.display = 'none'; }, 450);
+        });
+
+                window.addEventListener('DOMContentLoaded', function() {
             const backArrow = document.querySelector('.arrow:not(.right)');
             const forwardArrow = document.querySelector('.arrow.right');
             
@@ -636,6 +684,11 @@
         </div>
 
         <div class="main-content">
+            <!-- Loading Overlay (inside browser window) -->
+            <div class="loading-overlay" id="loadingOverlay">
+                <img src="images/loading.gif" class="loading-gif" alt="Loading...">
+            </div>
+            <div class="page-inner" id="pageInner">
             <div class="title-section">
                 <h1 class="main-title">personal projects</h1>
             </div>
@@ -672,4 +725,6 @@
                          alt="more coming soon...">
                     </div>
                 </div>
-            </di
+            </div><!-- end page-inner -->
+        </div>
+    </div>
