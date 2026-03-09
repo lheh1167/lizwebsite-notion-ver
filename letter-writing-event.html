@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>window._pageStartTime = performance.now();</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>letter writing event</title>
@@ -18,7 +17,7 @@
             background-color: #f7f7f7;
             min-height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             padding: 40px 150px;
         }
@@ -34,6 +33,8 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            margin-top: auto;
+            margin-bottom: auto;
         }
 
         .header-bar {
@@ -514,15 +515,19 @@
         window.addEventListener('load', function() {
             const overlay = document.getElementById('loadingOverlay');
             const pageInner = document.getElementById('pageInner');
-            const GIF_DURATION = 200;
-            const loadTime = performance.now();
-            const elapsed = loadTime - window._pageStartTime;
-            const remaining = Math.max(0, GIF_DURATION - elapsed);
+            const gif = overlay.querySelector('.loading-gif');
+            const GIF_DURATION = 2000;
+
+            // Restart GIF from frame 0, then wait exactly one full cycle
+            const src = gif.src;
+            gif.src = '';
+            gif.src = src;
+
             setTimeout(function() {
                 overlay.classList.add('hidden');
                 pageInner.classList.add('visible');
                 setTimeout(() => { overlay.style.display = 'none'; }, 450);
-            }, remaining);
+            }, GIF_DURATION);
         });
 
                 window.addEventListener('DOMContentLoaded', function() {

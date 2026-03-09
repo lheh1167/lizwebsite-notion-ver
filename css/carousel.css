@@ -10,11 +10,14 @@
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 5;
-  border-radius: 12px;
+  border-radius: 3px;
   overflow: hidden;
   background: #111;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
   touch-action: pan-y;
+}
+
+.carousel-frame.horizontal {
+  aspect-ratio: 1.91 / 1;
 }
 
 /* Image track */
