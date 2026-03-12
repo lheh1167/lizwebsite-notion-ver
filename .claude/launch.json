@@ -4,7 +4,7 @@
     {
       "name": "Static File Server",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8080"],
+      "runtimeArgs": ["-c", "import sys; sys.path=[p for p in sys.path if p]; import os,socketserver,http.server; os.chdir('/Users/eseul/Desktop/Lizwebsite Notion Ver/lizwebsite-notion-ver'); httpd=socketserver.TCPServer(('',8080),http.server.SimpleHTTPRequestHandler); print('Serving on http://localhost:8080'); httpd.serve_forever()"],
       "port": 8080
     }
   ]

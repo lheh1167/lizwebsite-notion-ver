@@ -323,8 +323,8 @@
             transform: translate(-50%, -50%);
             width: auto;
             height: auto;
-            max-width: 200px;
-            max-height: 200px;
+            max-width: 600px;
+            max-height: 600px;
         }
 
         .page-inner {
@@ -515,19 +515,37 @@
         window.addEventListener('load', function() {
             const overlay = document.getElementById('loadingOverlay');
             const pageInner = document.getElementById('pageInner');
-            const gif = overlay.querySelector('.loading-gif');
-            const GIF_DURATION = 2000;
 
-            // Restart GIF from frame 0, then wait exactly one full cycle
+            // Skip loading screen on back/forward navigation
+            const navEntries = performance.getEntriesByType('navigation');
+            if (navEntries.length > 0 && navEntries[0].type === 'back_forward') {
+                overlay.style.display = 'none';
+                pageInner.classList.add('visible');
+                return;
+            }
+
+            const gif = overlay.querySelector('.loading-gif');
+
+            // Start GIF from frame 0
             const src = gif.src;
             gif.src = '';
             gif.src = src;
 
-            setTimeout(function() {
+            // Dismiss as soon as the page has loaded — no fixed wait
+            overlay.classList.add('hidden');
+            pageInner.classList.add('visible');
+            setTimeout(() => { overlay.style.display = 'none'; }, 450);
+        });
+
+        // Also skip when restored from bfcache (back/forward)
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                const overlay = document.getElementById('loadingOverlay');
+                const pageInner = document.getElementById('pageInner');
+                overlay.style.display = 'none';
                 overlay.classList.add('hidden');
                 pageInner.classList.add('visible');
-                setTimeout(() => { overlay.style.display = 'none'; }, 450);
-            }, GIF_DURATION);
+            }
         });
 
                 window.addEventListener('DOMContentLoaded', function() {
