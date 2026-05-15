@@ -475,6 +475,7 @@
 
     <script>
         // Loading screen
+        const _loadStart = Date.now();
         window.addEventListener('load', function() {
             const overlay = document.getElementById('loadingOverlay');
             const pageInner = document.getElementById('pageInner');
@@ -487,17 +488,13 @@
                 return;
             }
 
-            const gif = overlay.querySelector('.loading-gif');
-
-            // Start GIF from frame 0
-            const src = gif.src;
-            gif.src = '';
-            gif.src = src;
-
-            // Dismiss as soon as the page has loaded — no fixed wait
-            overlay.classList.add('hidden');
-            pageInner.classList.add('visible');
-            setTimeout(() => { overlay.style.display = 'none'; }, 450);
+            const elapsed = Date.now() - _loadStart;
+            const remaining = Math.max(0, 2640 - elapsed);
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                pageInner.classList.add('visible');
+                setTimeout(() => { overlay.style.display = 'none'; }, 450);
+            }, remaining);
         });
 
         // Also skip when restored from bfcache (back/forward)
