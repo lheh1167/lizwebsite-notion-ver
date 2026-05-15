@@ -645,29 +645,9 @@
                 return;
             }
 
-            const gif = overlay.querySelector('.loading-gif');
-            const GIF_DURATION = 2000;
-
-            // Restart GIF from frame 0
-            const src = gif.src;
-            gif.src = '';
-            gif.src = src;
-
-            // Only wait the full GIF duration on the very first visit to the home page
-            const hasVisited = sessionStorage.getItem('homeVisited');
-            if (!hasVisited) {
-                sessionStorage.setItem('homeVisited', '1');
-                setTimeout(function() {
-                    overlay.classList.add('hidden');
-                    pageInner.classList.add('visible');
-                    setTimeout(() => { overlay.style.display = 'none'; }, 450);
-                }, GIF_DURATION);
-            } else {
-                // Subsequent visits: dismiss as soon as the page has loaded
-                overlay.classList.add('hidden');
-                pageInner.classList.add('visible');
-                setTimeout(() => { overlay.style.display = 'none'; }, 450);
-            }
+            overlay.classList.add('hidden');
+            pageInner.classList.add('visible');
+            setTimeout(() => { overlay.style.display = 'none'; }, 450);
         });
 
         // Also skip when restored from bfcache (back/forward)
